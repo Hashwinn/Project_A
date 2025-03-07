@@ -1,0 +1,13 @@
+backend:
+  build: ./backend
+  environment:
+    DB_HOST: db
+    DB_NAME: mydb
+    DB_USER: user
+    DB_PASSWORD: password
+  ports:
+    - "5000:5000"
+  depends_on:
+    db:
+      condition: service_healthy
+  command: ["./wait-for-it.sh", "db:5432", "--", "gunicorn", "--bind", "0.0.0.0:5000", "app:app"]

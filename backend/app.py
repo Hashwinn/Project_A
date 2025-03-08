@@ -17,10 +17,24 @@ conn = psycopg2.connect(
 @app.route("/api/submit", methods=["POST"])
 def submit():
     data = request.json
-    cur = conn.cursor()
-    cur.execute("INSERT INTO users (name, email) VALUES (%s, %s)", (data["name"], data["email"]))
-    conn.commit()
-    return jsonify({"message": "User created!"}), 201
+    
+    # Validate required fields
+    required_fields = ["first_name", "last_name", "email", "password", "contact", "gender"]
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO users (first_name, last_name, email, password, contact, gender) 
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (data["first_name"], data["last_name"], data["email"], data["password"], data["contact"], data["gender"]))
+        
+        conn.commit()
+        cur.close()
+        return jsonify({"message": "User created successfully!"}), 201
+    except psycopg2.Error as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

@@ -1,26 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Registration Form - By Nidhi Upman</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				background-color: #f3f3f3;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+			}
 
-    <div class="container">
-        <h2>User Registration</h2>
-        <form id="registration-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+			.main {
+				background-color: #fff;
+				border-radius: 15px;
+				box-shadow: 0 0 20px
+					rgba(0, 0, 0, 0.2);
+				padding: 20px;
+				width: 300px;
+			}
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+			.main h2 {
+				color: #4caf50;
+				margin-bottom: 20px;
+			}
 
-            <button type="submit">Register</button>
-        </form>
-    </div>
+			label {
+				display: block;
+				margin-bottom: 5px;
+				color: #555;
+				font-weight: bold;
+			}
 
-    <script src="app.js"></script>
-</body>
+			input[type="text"],
+			input[type="email"],
+			input[type="password"],
+			select {
+				width: 100%;
+				margin-bottom: 15px;
+				padding: 10px;
+				box-sizing: border-box;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+			}
+
+			button[type="submit"] {
+				padding: 15px;
+				border-radius: 10px;
+				border: none;
+				background-color: #4caf50;
+				color: white;
+				cursor: pointer;
+				width: 100%;
+				font-size: 16px;
+			}
+
+			.success-message {
+				text-align: center;
+				color: #4caf50;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="main">
+			<h2>Registration Form - for Access</h2>
+			<form onsubmit="return handleSubmit(event)">
+				<label for="first">First Name:</label>
+				<input
+					type="text"
+					id="first"
+					name="first"
+					required
+				/>
+
+				<label for="last">Last Name:</label>
+				<input
+					type="text"
+					id="last"
+					name="last"
+					required
+				/>
+
+				<label for="email">Email:</label>
+				<input
+					type="email"
+					id="email"
+					name="email"
+					required
+				/>
+
+				<label for="password">Password:</label>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9])\S{8,}$"
+					title="Password must contain at least one number, 
+						one alphabet, one symbol, and be at 
+						least 8 characters long"
+					required
+				/>
+
+				<label for="repassword">Re-type Password:</label>
+				<input
+					type="password"
+					id="repassword"
+					name="repassword"
+					required
+				/>
+
+				<label for="mobile">Contact:</label>
+				<input
+					type="text"
+					id="mobile"
+					name="mobile"
+					maxlength="10"
+					required
+				/>
+
+				<label for="gender">Gender:</label>
+				<select
+					id="gender"
+					name="gender"
+					required
+				>
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+					<option value="other">Other</option>
+				</select>
+
+				<button type="submit">Register</button>
+			</form>
+		</div>
+
+		<script>
+			function handleSubmit(event) {
+				event.preventDefault();
+
+				// Get form values
+				const password = document.getElementById('password').value;
+				const repassword = document.getElementById('repassword').value;
+				const mobile = document.getElementById('mobile').value;
+
+				// Password validation
+				if (password !== repassword) {
+					alert('Passwords do not match!');
+					return false;
+				}
+
+				// Mobile number validation
+				if (!/^\d{10}$/.test(mobile)) {
+					alert('Contact number must be 10 digits.');
+					return false;
+				}
+
+				// Show success message
+				const mainDiv = document.querySelector('.main');
+				mainDiv.innerHTML = `
+					<h2 class="success-message">Registration Successful!</h2>
+					<p class="success-message">Your account has been created successfully.</p>
+				`;
+
+				return false;
+			}
+		</script>
+	</body>
 </html>
